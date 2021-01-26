@@ -137,7 +137,7 @@
                                 <h2 class='card-title pricing-card-title precio'>$ <span class=''>$price</span></h2>
                                 <ul class='list-unstyled mt-3 mb-4'>
                                     <li><h5>$description</h5></li>
-                                    <li><a >Stock:</a><h5 id='stock'> $stock</h5></li>
+                                    <li><a style='color:#007600;'>Disponible. </a><h5 id='stock'> $stock</h5></li>
                                 </ul>
                                 <a href='' class='btn btn-block btn-primary agregar-carrito' data-id='$id'>Comprar</a>
                             </div>
