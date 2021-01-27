@@ -57,7 +57,7 @@
                 <h1 class="display-4">Realizar Compra</h1>
             </div>
         </div> <!-- End -->
-        <div class="container py-5">
+        <div class="container py-5  ">
 
             <div class="row mt-3">
                 <div class="col">
@@ -72,9 +72,9 @@
                                             <th scope="col">Imagen</th>
                                             <th scope="col">Nombre</th>
                                             <th scope="col">Precio</th>
-                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">Cantidad</th>                                            
+                                            <th scope="col">Subtotal</th>
                                             <th scope="col">Stock</th>
-                                            <th scope="col">Sub Total</th>
                                             <th scope="col">Eliminar</th>
                                         </tr>
 

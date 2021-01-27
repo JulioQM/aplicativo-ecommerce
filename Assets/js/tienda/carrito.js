@@ -1,37 +1,37 @@
 class Carrito {
 
     //Añadir producto al carrito
-    comprarProducto(e){
+    comprarProducto(e) {
         e.preventDefault();
         //Delegado para agregar al carrito
-        if(e.target.classList.contains('agregar-carrito')){
+        if (e.target.classList.contains('agregar-carrito')) {
             const producto = e.target.parentElement.parentElement;
             //Enviamos el producto seleccionado para tomar sus datos
             this.leerDatosProducto(producto);
-            swal("OK","Producto Agregado","success");
+            swal("OK", "Producto Agregado", "success");
         }
     }
 
     //Leer datos del producto de la pagina de index de referencia linea 130
-    leerDatosProducto(producto){
+    leerDatosProducto(producto) {
         const infoProducto = {
-            imagen : producto.querySelector('img').src,
+            imagen: producto.querySelector('img').src,
             titulo: producto.querySelector('h4').textContent,
             precio: producto.querySelector('.precio span').textContent,
             id: producto.querySelector('a').getAttribute('data-id'),
             //en este apartado llamo al stock
-            stock:producto.querySelector('#stock').textContent,
+            stock: producto.querySelector('#stock').textContent,
             cantidad: 1
         }
         let productosLS;
         productosLS = this.obtenerProductosLocalStorage();
-        productosLS.forEach(function (productoLS){
-            if(productoLS.id === infoProducto.id){
+        productosLS.forEach(function (productoLS) {
+            if (productoLS.id === infoProducto.id) {
                 productosLS = productoLS.id;
             }
         });
 
-        if(productosLS === infoProducto.id){
+        if (productosLS === infoProducto.id) {
             Swal.fire({
                 type: 'info',
                 title: 'Oops...',
@@ -43,12 +43,12 @@ class Carrito {
         else {
             this.insertarCarrito(infoProducto);
         }
-        
+
     }
 
     // Muestra producto seleccionado en carrito
     // En este apartado muestro los valores en la lista desplegable del carrito
-    insertarCarrito(producto){
+    insertarCarrito(producto) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>
@@ -66,10 +66,10 @@ class Carrito {
     }
 
     //Eliminar el producto del carrito en el DOM
-    eliminarProducto(e){
+    eliminarProducto(e) {
         e.preventDefault();
         let producto, productoID;
-        if(e.target.classList.contains('borrar-producto')){
+        if (e.target.classList.contains('borrar-producto')) {
             e.target.parentElement.parentElement.remove();
             producto = e.target.parentElement.parentElement;
             productoID = producto.querySelector('a').getAttribute('data-id');
@@ -80,9 +80,9 @@ class Carrito {
     }
 
     //Elimina todos los productos
-    vaciarCarrito(e){
+    vaciarCarrito(e) {
         e.preventDefault();
-        while(listaProductos.firstChild){
+        while (listaProductos.firstChild) {
             listaProductos.removeChild(listaProductos.firstChild);
         }
         this.vaciarLocalStorage();
@@ -90,8 +90,8 @@ class Carrito {
         return false;
     }
     //Elimina todos los productos del carrito cuando cierra sesión
-    vaciarCarrito(){
-        while(listaProductos.firstChild){
+    vaciarCarrito() {
+        while (listaProductos.firstChild) {
             listaProductos.removeChild(listaProductos.firstChild);
         }
         this.vaciarLocalStorage();
@@ -99,7 +99,7 @@ class Carrito {
     }
 
     //Almacenar en el LS
-    guardarProductosLocalStorage(producto){
+    guardarProductosLocalStorage(producto) {
         let productos;
         //Toma valor de un arreglo con datos del LS
         productos = this.obtenerProductosLocalStorage();
@@ -107,14 +107,19 @@ class Carrito {
         productos.push(producto);
         //Agregamos al LS
         localStorage.setItem('productos', JSON.stringify(productos));
+
+        // Obtengo el string previamente salvado y luego
+        var guardado = localStorage.getItem('productos');
+
+        console.log('objetoObtenido: ', JSON.parse(guardado));
     }
 
     //Comprobar que hay elementos en el LS
-    obtenerProductosLocalStorage(){
+    obtenerProductosLocalStorage() {
         let productoLS;
 
         //Comprobar si hay algo en LS
-        if(localStorage.getItem('productos') === null){
+        if (localStorage.getItem('productos') === null) {
             productoLS = [];
         }
         else {
@@ -123,13 +128,13 @@ class Carrito {
         return productoLS;
     }
 
-   
+
     //Mostrar los productos guardados en el LS
     // En este apartado se encuentra la lista desplegable del carrito
-    leerLocalStorage(){
+    leerLocalStorage() {
         let productosLS;
         productosLS = this.obtenerProductosLocalStorage();
-        productosLS.forEach(function (producto){
+        productosLS.forEach(function (producto) {
             //Construir plantilla
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -150,10 +155,10 @@ class Carrito {
     //Mostrar los productos guardados en el LS en compra.php
     // mostrar los productos en el final del pedido de compras
     //controlar el minimo y el maximo del stock
-    leerLocalStorageCompra(){
-        let productosLS;        
+    leerLocalStorageCompra() {
+        let productosLS;
         productosLS = this.obtenerProductosLocalStorage();
-        productosLS.forEach(function (producto){
+        productosLS.forEach(function (producto) {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>
@@ -163,10 +168,10 @@ class Carrito {
                 <td>${producto.precio}</td>
                 <td>
                     <input type="number" class="form-control cantidad" min="1" max=${producto.stock} value=${producto.cantidad}>
-                </td>
-                <td>${producto.stock}</td>
+                </td>               
                 
                 <td id='subtotales'>${producto.precio * producto.cantidad}</td>
+                <td>${producto.stock}</td>
                 <td>
                     <a href="#" class="borrar-producto fas fa-times-circle" style="font-size:30px" data-id="${producto.id}"></a>
                 </td>
@@ -176,13 +181,13 @@ class Carrito {
     }
 
     //Eliminar producto por ID del LS
-    eliminarProductoLocalStorage(productoID){
+    eliminarProductoLocalStorage(productoID) {
         let productosLS;
         //Obtenemos el arreglo de productos
         productosLS = this.obtenerProductosLocalStorage();
         //Comparar el id del producto borrado con LS
-        productosLS.forEach(function(productoLS, index){
-            if(productoLS.id === productoID){
+        productosLS.forEach(function (productoLS, index) {
+            if (productoLS.id === productoID) {
                 productosLS.splice(index, 1);
             }
         });
@@ -192,15 +197,15 @@ class Carrito {
     }
 
     //Eliminar todos los datos del LS
-    vaciarLocalStorage(){
+    vaciarLocalStorage() {
         localStorage.clear();
     }
 
     //Procesar pedido
-    procesarPedido(e){
+    procesarPedido(e) {
         e.preventDefault();
 
-        if(this.obtenerProductosLocalStorage().length === 0){
+        if (this.obtenerProductosLocalStorage().length === 0) {
             Swal.fire({
                 type: 'error',
                 title: 'Oops...',
@@ -215,18 +220,18 @@ class Carrito {
     }
 
     //Calcular montos
-    calcularTotal(){
+    calcularTotal() {
         let productosLS;
         let total = 0, igv = 0, subtotal = 0;
         productosLS = this.obtenerProductosLocalStorage();
-        for(let i = 0; i < productosLS.length; i++){
+        for (let i = 0; i < productosLS.length; i++) {
             let element = Number(productosLS[i].precio * productosLS[i].cantidad);
             total = total + element;
-            
+
         }
-        
+
         igv = parseFloat(total * 0.12).toFixed(2);
-        subtotal = parseFloat(total-igv).toFixed(2);
+        subtotal = parseFloat(total - igv).toFixed(2);
 
         document.getElementById('subtotal').innerHTML = "$ " + subtotal;
         document.getElementById('igv').innerHTML = "$ " + igv;
@@ -246,12 +251,12 @@ class Carrito {
             productosLS = this.obtenerProductosLocalStorage();
             productosLS.forEach(function (productoLS, index) {
                 if (productoLS.id === id) {
-                    productoLS.cantidad = cantidad;                    
+                    productoLS.cantidad = cantidad;
                     actualizarMontos[index].innerHTML = Number(cantidad * productosLS[index].precio).toFixed(2);
-                }    
+                }
             });
             localStorage.setItem('productos', JSON.stringify(productosLS));
-            
+
         }
         else {
             console.log("click afuera");
