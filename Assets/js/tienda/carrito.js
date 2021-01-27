@@ -12,13 +12,15 @@ class Carrito {
         }
     }
 
-    //Leer datos del producto
+    //Leer datos del producto de la pagina de index de referencia linea 130
     leerDatosProducto(producto){
         const infoProducto = {
             imagen : producto.querySelector('img').src,
             titulo: producto.querySelector('h4').textContent,
             precio: producto.querySelector('.precio span').textContent,
             id: producto.querySelector('a').getAttribute('data-id'),
+            //en este apartado llamo al stock
+            stock:producto.querySelector('#stock').textContent,
             cantidad: 1
         }
         let productosLS;
@@ -44,7 +46,8 @@ class Carrito {
         
     }
 
-    //muestra producto seleccionado en carrito
+    // Muestra producto seleccionado en carrito
+    // En este apartado muestro los valores en la lista desplegable del carrito
     insertarCarrito(producto){
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -52,7 +55,7 @@ class Carrito {
                 <img src="${producto.imagen}" width=100>
             </td>
             <td>${producto.titulo}</td>
-            <td>${producto.precio}</td>
+            <td>${producto.precio}</td>            
             <td>
                 <a href="#" class="borrar-producto fas fa-times-circle" data-id="${producto.id}"></a>
             </td>
@@ -122,6 +125,7 @@ class Carrito {
 
    
     //Mostrar los productos guardados en el LS
+    // En este apartado se encuentra la lista desplegable del carrito
     leerLocalStorage(){
         let productosLS;
         productosLS = this.obtenerProductosLocalStorage();
@@ -133,7 +137,8 @@ class Carrito {
                     <img src="${producto.imagen}" width=100>
                 </td>
                 <td>${producto.titulo}</td>
-                <td>${producto.precio}</td>
+                <td>${producto.precio}</td>  
+                               
                 <td>
                     <a href="#" class="borrar-producto fas fa-times-circle" data-id="${producto.id}"></a>
                 </td>
@@ -143,8 +148,9 @@ class Carrito {
     }
 
     //Mostrar los productos guardados en el LS en compra.php
+    // mostrar los productos en el final del pedido de compras
     leerLocalStorageCompra(){
-        let productosLS;
+        let productosLS;        
         productosLS = this.obtenerProductosLocalStorage();
         productosLS.forEach(function (producto){
             const row = document.createElement('tr');
@@ -155,8 +161,10 @@ class Carrito {
                 <td>${producto.titulo}</td>
                 <td>${producto.precio}</td>
                 <td>
-                    <input type="number" class="form-control cantidad" min="1" value=${producto.cantidad}>
+                    <input type="number" class="form-control cantidad" min="1" max=${producto.stock} value=${producto.cantidad}>
                 </td>
+                <td>${producto.stock}</td>
+                
                 <td id='subtotales'>${producto.precio * producto.cantidad}</td>
                 <td>
                     <a href="#" class="borrar-producto fas fa-times-circle" style="font-size:30px" data-id="${producto.id}"></a>
