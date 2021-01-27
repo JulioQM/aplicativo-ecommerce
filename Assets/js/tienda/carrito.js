@@ -149,6 +149,7 @@ class Carrito {
 
     //Mostrar los productos guardados en el LS en compra.php
     // mostrar los productos en el final del pedido de compras
+    //controlar el minimo y el maximo del stock
     leerLocalStorageCompra(){
         let productosLS;        
         productosLS = this.obtenerProductosLocalStorage();
